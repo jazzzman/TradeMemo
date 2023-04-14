@@ -28,7 +28,12 @@ layout = dbc.Container([
                     dbc.InputGroupText("Ticker"), 
                     dbc.Input(placeholder="...",type='text',id='ticker'),
                     dbc.FormFeedback("Set the Ticker", type="invalid"),
-                ]),
+                ], className='pb-1'),
+                dbc.InputGroup([
+                    dbc.InputGroupText("Дата"), 
+                    dbc.Input(value = f"{datetime.now().strftime('%d.%m.%Y')}",type='text',id='datefield'),
+                    dbc.FormFeedback("Неверный формат даты. Пример: 02.12.2023", type="invalid"),
+                ], className='py-1'),
                 dbc.Checklist(
                     options=[{'label':f,'value':i} for i,(f,v) in enumerate(features) if f not in ['PNL','Datetime']],
                     value=[],
@@ -98,8 +103,8 @@ layout = dbc.Container([
             className='col-3'
         ),
         dbc.Col([
-            dbc.Col([html.Div('15 minutes'),html.Img(className='w-100',id='img15')]),
-            dbc.Col([html.Div('3 minutes'),html.Img(className='w-100',id='img3')])
+            dbc.Col([html.Div('Фоновый Таймфрейм'),html.Img(className='w-100',id='img15')]),
+            dbc.Col([html.Div('Рабочий Таймфрейм'),html.Img(className='w-100',id='img3')])
         ]),
     ]),
     html.Div([
@@ -132,20 +137,26 @@ layout = dbc.Container([
     Output('img3', 'src'),
     Output('img-alert','is_open'),
     Output('update','disabled'),
+    Output('datefield','invalid'),
+    Output('updated-alert','is_open'),
     Input('save_15min','n_clicks'),
     Input('save_3min','n_clicks'),
     Input('ticker', 'value'),
+    Input('datefield','value'),
+    Input('update','n_clicks'),
+    State('checklist','value'),
+    State('pnl_select','value'),
 )
-def get_img(n15, n3, ticker):
+def get_img(n15, n3, ticker,date,updclk,checklist,pnl):
     global IMG15, IMG3, file_names
     trg_id = ctx.triggered_id
 
     if trg_id in ['save_15min','save_3min']:
         if not ticker:
-            return True, IMG15, IMG3, False, True
+            return True, IMG15, IMG3, False, True, False,False
         img  = get_img_clipboard()
         if not img:
-            return False, IMG15, IMG3, True, True
+            return False, IMG15, IMG3, True, True, False,False
         md5hash = hashlib.md5(img.tobytes()).hexdigest()
 
     if trg_id == 'save_15min':
@@ -157,21 +168,25 @@ def get_img(n15, n3, ticker):
         fn = f'{ticker}_ST_{md5hash}.png'
         file_names['img3']=fn
     elif trg_id=='ticker':
-        return ticker in ['',None], IMG15,IMG3,False,True
+        return ticker in ['',None], IMG15,IMG3,False,True, False,False
+    elif trg_id=='datefield':
+        try:
+            res = not bool(datetime.strptime(date, '%d.%m.%Y'))
+        except ValueError:
+            res = True
+        return False, IMG15,IMG3,False,True, res,False
+    elif trg_id == 'update':
+        update_db(updclk,ticker,checklist,pnl)
+        return False, IMG15, IMG3, False, True, False,True
     else:
-        return False, IMG15, IMG3, False, True
+        return False, IMG15, IMG3, False, True, False,False
 
-    img.save(os.path.join(get_asset_url
-                          ('snapshots')[1:],fn),'PNG') 
-    return False, IMG15, IMG3, False, not all(file_names.values())
+    snapshot_folder = get_asset_url('snapshots')[1:]
+    if not os.path.exists(snapshot_folder):
+        os.mkdir(snapshot_folder)
+    img.save(os.path.join(snapshot_folder,fn),'PNG')
+    return False, IMG15, IMG3, False, not all(file_names.values()), False,False
 
-@callback(
-    Output('updated-alert','is_open'),
-    Input('update','n_clicks'),
-    State('ticker','value'),
-    State('checklist','value'),
-    State('pnl_select','value'),
-)
 def update_db(n_clicks,ticker,checklist,pnl):
     global DBNAME, features, file_names, IMG15, IMG3
     if not all(file_names.values()):
@@ -205,7 +220,6 @@ def update_db(n_clicks,ticker,checklist,pnl):
 
     IMG15 = None
     IMG3 = None
-    get_img(0,0,ticker)
     return True
 
 
