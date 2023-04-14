@@ -50,7 +50,7 @@ def get_stat(df):
 
 def get_db(db_name):
     if not os.path.exists(db_name):
-        df = pd.DataFrame()
+        df = pd.DataFrame(columns=['ticker']+[f for f,v in features]+['filenames'])
     else:
         df = pd.read_csv(
             db_name,
