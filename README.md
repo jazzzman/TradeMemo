@@ -6,7 +6,7 @@
 
 
 ## Установка
-![img](https://github.com/jazzzman/TradeMemo/docs/python_install.gif)
+![img](https://github.com/jazzzman/TradeMemo/blol/main/docs/python_install.gif)
 1.Установить последнюю версию [Python](https://www.python.org/downloads/windows/)
 >При установке установить галочку Добавить Python в переменные окружения.
 2.Проверить корректность установки.
