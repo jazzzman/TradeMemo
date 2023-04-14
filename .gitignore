@@ -130,3 +130,4 @@ dmypy.json
 
 # Data files
 /assets/snapshots/*.png
+db_levels.csv
