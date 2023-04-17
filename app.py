@@ -8,7 +8,7 @@ app = Dash(
     external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP],
     suppress_callback_exceptions=True,
     prevent_initial_callbacks=True,
-    title='RNote',
+    title='TradeMemo',
     update_title=None
 )
 server = app.server

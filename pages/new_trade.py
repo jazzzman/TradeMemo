@@ -176,7 +176,7 @@ def get_img(n15, n3, ticker,date,updclk,checklist,pnl):
             res = True
         return False, IMG15,IMG3,False,True, res,False
     elif trg_id == 'update':
-        update_db(updclk,ticker,checklist,pnl)
+        update_db(updclk,ticker,checklist,pnl,date)
         return False, IMG15, IMG3, False, True, False,True
     else:
         return False, IMG15, IMG3, False, True, False,False
@@ -187,7 +187,7 @@ def get_img(n15, n3, ticker,date,updclk,checklist,pnl):
     img.save(os.path.join(snapshot_folder,fn),'PNG')
     return False, IMG15, IMG3, False, not all(file_names.values()), False,False
 
-def update_db(n_clicks,ticker,checklist,pnl):
+def update_db(n_clicks,ticker,checklist,pnl, date):
     global DBNAME, features, file_names, IMG15, IMG3
     if not all(file_names.values()):
         return False
@@ -212,7 +212,7 @@ def update_db(n_clicks,ticker,checklist,pnl):
             print('Adding column:',nc)
             db.insert(len(db.columns)-last_cols,nc,-1)
 
-    new_row = [ticker]+chbx+[datetime.now().strftime('%d.%m.%Y'),pnl,list(file_names.values())]
+    new_row = [ticker]+chbx+[date,pnl,list(file_names.values())]
     db.loc[len(db.index)]=new_row
     db.to_csv(DBNAME,index=False)
     for k in file_names:
