@@ -14,7 +14,11 @@ def generate_table(df, reverse=False):
     return dash_table.DataTable(
         id='datatable',
         columns=[
-            {"name": i, "id": i, "deletable": False, "selectable": True} 
+            {"name": i, 
+             "id": i, 
+             "deletable": False, 
+             "selectable": True,
+             "type": _table_type(df[i])} 
             for i in df.columns if i not in ['id','filenames']
         ],
         data=df.to_dict('records'),
@@ -31,6 +35,20 @@ def generate_table(df, reverse=False):
         page_current= 0,
         page_size= 5,
     )
+
+def _table_type(df_column):
+    if pd.api.types.is_datetime64_ns_dtype(df_column.dtype):
+        return 'datetime',
+    elif (pd.api.types.is_string_dtype(df_column.dtype) or
+          pd.api.types.is_bool_dtype(df_column.dtype) or
+          pd.api.types.is_categorical_dtype(df_column.dtype) or
+          pd.api.types.is_period_dtype(df_column.dtype)):
+        return 'text'
+    elif (pd.api.types.is_numeric_dtype(df_column.dtype) or
+          pd.api.types.is_sparse(df_column.dtype)):
+        return 'numeric'
+    else:
+        return 'any'
 
 def get_stat(df):
     ps = []
@@ -58,6 +76,8 @@ def get_db(db_name):
             index_col=None,
         )
     df['id']=df.index
+    if 'Datetime' in df.columns:
+        df['Datetime'] = pd.to_datetime(df['Datetime'], format="%d.%m.%Y", errors='coerce').dt.date
     return df
 
 df = get_db(DBNAME)
