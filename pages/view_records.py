@@ -158,8 +158,8 @@ layout = html.Div([
                         interval=None,
                         id='img_modal_carousel',
                     ),
-                    html.Div(className='vt'),
-                    html.Div(className='hl'),
+                    html.Div(className='vertical-cross'),
+                    html.Div(className='horizontal-cross'),
                 ]),
                 html.P(className='text-black-50', id='filename')
             ]),

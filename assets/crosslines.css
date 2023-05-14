@@ -10,18 +10,18 @@
   /*background: purple;*/
 /*}*/
 
-/*.vt {*/
-  /*position: absolute;*/
-  /*top: 0;*/
-  /*bottom: 0;*/
-  /*width: 1px;*/
-  /*background: red;*/
-/*}*/
+.vertical-cross {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: red;
+}
 
-/*.hl {*/
-  /*position: absolute;*/
-  /*height: 1px;*/
-  /*left: 0;*/
-  /*right: 0;*/
-  /*background: red;*/
-/*}*/
+.horizontal-cross {
+  position: absolute;
+  height: 1px;
+  left: 0;
+  right: 0;
+  background: red;
+}
