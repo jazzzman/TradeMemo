@@ -82,8 +82,6 @@ def get_db(db_name):
 
 df = get_db(DBNAME)
 
-
-
 layout = html.Div([
     html.Div([
             html.H2('Info about count rows:', className='label label-info ms-0', id='info_header'),
