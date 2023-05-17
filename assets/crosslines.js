@@ -8,7 +8,7 @@ var observer = new MutationObserver(function(mutations) {
               cursorVT.setAttribute('style', `left: ${e.clientX}px;`);
               cursorHL.setAttribute('style', `top: ${e.clientY}px;`);
         });
-        observer.disconnect();
+        //observer.disconnect();
     }
 });
 
