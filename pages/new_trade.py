@@ -1,7 +1,9 @@
 import os
+import sys
 import dash_bootstrap_components as dbc
 import hashlib
 import pandas as pd
+import pyscreenshot
 
 from datetime import datetime
 from dash import callback, dcc, html, Input, Output, State, ctx, get_asset_url
@@ -9,12 +11,16 @@ from PIL import ImageGrab, Image
 from .config import features, DBNAME, tooltip_delay
 
 
+
 IMG15=None
 IMG3=None
 file_names={'img15':'','img3':''}
 
 def get_img_clipboard():
-    img = ImageGrab.grabclipboard()
+    if sys.platform in ['linux','linux2']:
+        im = pyscreenshot.grab()
+    elif sys.platform == 'win32':
+        img = ImageGrab.grabclipboard()
     if type(img) is list:
         img = Image.open(img[0])
     return img
