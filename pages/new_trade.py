@@ -3,7 +3,6 @@ import sys
 import dash_bootstrap_components as dbc
 import hashlib
 import pandas as pd
-import pyscreenshot
 
 from datetime import datetime
 from dash import callback, dcc, html, Input, Output, State, ctx, get_asset_url
@@ -17,10 +16,7 @@ IMG3=None
 file_names={'img15':'','img3':''}
 
 def get_img_clipboard():
-    if sys.platform in ['linux','linux2']:
-        im = pyscreenshot.grab()
-    elif sys.platform == 'win32':
-        img = ImageGrab.grabclipboard()
+    img = ImageGrab.grabclipboard()
     if type(img) is list:
         img = Image.open(img[0])
     return img
@@ -150,10 +146,12 @@ layout = dbc.Container([
     Input('ticker', 'value'),
     Input('datefield','value'),
     Input('update','n_clicks'),
+    State('img15','src'),
+    State('img3','src'),
     State('checklist','value'),
     State('pnl_select','value'),
 )
-def get_img(n15, n3, ticker,date,updclk,checklist,pnl):
+def get_img(n15, n3, ticker,date,updclk,img15,img3,checklist,pnl):
     global IMG15, IMG3, file_names
     trg_id = ctx.triggered_id
 
@@ -227,5 +225,4 @@ def update_db(n_clicks,ticker,checklist,pnl, date):
     IMG15 = None
     IMG3 = None
     return True
-
 

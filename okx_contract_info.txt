@@ -1,0 +1,46 @@
+{
+    "ETH": {
+        "Multiplier": "1",
+        "FaceValue": "0.1"
+    },
+    "BNB": {
+        "Multiplier": "1",
+        "FaceValue": "0.01"
+    },
+    "XRP": {
+        "Multiplier": "1",
+        "FaceValue": "100"
+    },
+    "ADA": {
+        "Multiplier": "1",
+        "FaceValue": "100"
+    },
+    "DOGE": {
+        "Multiplier": "1",
+        "FaceValue": "1000"
+    },
+    "MATIC": {
+        "Multiplier": "1",
+        "FaceValue": "10"
+    },
+    "SOL": {
+        "Multiplier": "1",
+        "FaceValue": "1"
+    },
+    "DOT": {
+        "Multiplier": "1",
+        "FaceValue": "1"
+    },
+    "LTC": {
+        "Multiplier": "1",
+        "FaceValue": "1"
+    },
+    "TRX": {
+        "Multiplier": "1",
+        "FaceValue": "1000"
+    },
+    "AVAX": {
+        "Multiplier": "1",
+        "FaceValue": "1"
+    }
+}
