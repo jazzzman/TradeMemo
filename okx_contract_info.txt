@@ -1,5 +1,9 @@
 {
-    "ETH": {
+    "BTC": {
+        "Multiplier": "1",
+        "FaceValue": "0.01"
+    },
+     "ETH": {
         "Multiplier": "1",
         "FaceValue": "0.1"
     },
