@@ -3,7 +3,7 @@ import argparse
 
 
 CONTRACT_INFO ='okx_contract_info.txt' 
-STOP_LOSS = 100
+STOP_LOSS = 150
 
 def fee_per_trade(ticker, contract_info, price, change, sl):
     """Return contract count, approximate fee for position, tigertrade order volume, zero result price change"""
@@ -26,7 +26,7 @@ ap.add_argument("-l","--limit",help=f"Stop loss size in USD. (Default: ${STOP_LO
 
 args = ap.parse_args()
 
-ticker,price,ticks,sl = args.ticker,args.price,args.tick_count,args.limit
+ticker,price,ticks,sl = args.ticker.upper(),args.price,args.tick_count,args.limit
 
 
 with open(CONTRACT_INFO,'r') as f:
@@ -35,6 +35,6 @@ with open(CONTRACT_INFO,'r') as f:
 vol, fee, ttvol, zero_ticks = fee_per_trade(ticker, contract_info[ticker],price,ticks,sl)
 
 print(f'Order Volume: {vol:.2f}\n'
-      f'TigerTrade vol: {ttvol:.2f}\n'
+      f'TigerTrade vol: {ttvol:.0f}\n'
       f'Approximate fee: {fee:.2f}\n'
-      f'Zero profit ticks: {zero_ticks}\n')
+      f'Zero profit ticks: {zero_ticks:f}\n')
